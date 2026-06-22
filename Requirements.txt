@@ -1,0 +1,3 @@
+sqlcipher3-wheels
+supabase
+python-dotenv
