@@ -1,8 +1,10 @@
 import os
 import tkinter as tk
 from tkinter import messagebox, ttk
+
 from dotenv import load_dotenv
 from supabase import create_client, Client
+import urllib.request
 
 load_dotenv()
 
@@ -39,6 +41,15 @@ class LoginFrame(ttk.Frame):
         self.login_btn = ttk.Button(self, text="Login", command=self.handle_login)
         self.login_btn.pack(pady=15, fill=tk.X)
 
+
+    def get_public_ip(self):
+        try:
+            with urllib.request.urlopen("https://api.ipify.org", timeout=5) as response:
+                return response.read().decode('utf-8')
+        
+        except Exception as e:
+            return e
+
     def handle_login(self):
         email = self.email_entry.get().strip()
         password = self.password_entry.get().strip()
@@ -54,7 +65,16 @@ class LoginFrame(ttk.Frame):
             user = auth_response.user
             
             if user:
-                # Send the user ID and email back to app.py
+                
+                user_ip = str(self.get_public_ip())
+
+                supabase.table("user_status").upsert({
+                    "username": email,
+                    "user_id": str(user.id),
+                    "ip_address": user_ip,
+                    "updated_at": "now()"
+                }).execute()
+
                 self.on_success(user.id, email)
                 
         except Exception as e:

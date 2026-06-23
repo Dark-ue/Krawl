@@ -12,29 +12,26 @@ from frontend.login import LoginFrame
 class KrawlApplication(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.title("Krawl Portal")
+        self.title("Krawl Messenger")
         self.geometry("350x250")
         self.resizable(False, False)
         self.eval('tk::PlaceWindow . center')
         
         self.db_instance = None
         
-        # Load the login window frame first
         self.current_frame = LoginFrame(self, on_success_callback=self.login_successful)
 
     def login_successful(self, user_uuid, email):
-        # 1. Destroy login screen
+       
         self.current_frame.destroy()
         
-        # 2. Instantly unlock the Database using the UUID from Supabase
         print(f"Authenticating database layer for UUID: {user_uuid}")
         self.db_instance = Database("app.db", user_uuid)
         
-        # 3. Transition to main UI workspace
         self.show_main_dashboard(email)
 
     def show_main_dashboard(self, email):
-        self.geometry("600x400")  # Resize window for workspace view
+        self.geometry("600x400")  
         
         self.current_frame = ttk.Frame(self, padding="20")
         self.current_frame.pack(fill=tk.BOTH, expand=True)
