@@ -2,6 +2,7 @@ import sys
 import os
 import tkinter as tk
 from tkinter import ttk
+from backend.contact import Contact_imp
 
 # Add the 'src' directory to python path so it handles imports smoothly
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -45,3 +46,8 @@ class KrawlApplication(tk.Tk):
 if __name__ == "__main__":
     app = KrawlApplication()
     app.mainloop()
+
+    contact = Contact_imp('admin@trinetra.self')
+    ip = contact.ip_back()
+
+    print(ip)

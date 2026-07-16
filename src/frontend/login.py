@@ -1,22 +1,7 @@
-import os
 import tkinter as tk
 from tkinter import messagebox, ttk
-
-from dotenv import load_dotenv
-from supabase import create_client, Client
+from backend.client import supabase
 import urllib.request
-
-load_dotenv()
-
-SUPABASE_URL = os.getenv("SUPABASE_URL")
-SUPABASE_KEY = os.getenv("SUPABASE_KEY")
-
-if not SUPABASE_URL or not SUPABASE_KEY:
-    raise RuntimeError(
-        "Missing Supabase credentials. Please set SUPABASE_URL and SUPABASE_KEY in your .env file."
-    )
-
-supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 class LoginFrame(ttk.Frame):
     def __init__(self, parent, on_success_callback):
