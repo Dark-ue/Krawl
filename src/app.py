@@ -3,6 +3,7 @@ import os
 import tkinter as tk
 from tkinter import ttk
 from backend.contact import Contact_imp
+from frontend.chat import ChatDashboard
 
 # Add the 'src' directory to python path so it handles imports smoothly
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -42,6 +43,14 @@ class KrawlApplication(tk.Tk):
         
         # Add your chat/app elements here and pass self.db_instance to execute SQL tasks!
         ttk.Label(self.current_frame, text="🔒 Database: Active, Unlocked, & Sandboxed").pack(pady=10)
+
+    
+    def show_main_dashboard(self, email):
+        self.geometry("600x400")
+        self.resizable(True, True)
+
+        self.current_frame = ChatDashboard(self, self.db_instance, email)
+
 
 if __name__ == "__main__":
     app = KrawlApplication()

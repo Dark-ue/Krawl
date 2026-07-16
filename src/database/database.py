@@ -1,6 +1,5 @@
 from sqlcipher3 import dbapi2
 
-
 class Database:
     def __init__(self, db, passphrase):
         self.db = db
@@ -54,3 +53,19 @@ class Database:
 
         self.conn.commit()
 
+    def add_contact(self, username, ip_address, public_key="None"):
+        try:
+            cursor = self.conn.cursor()
+            sql = '''
+            INSERT INTO my_contacts (peer_username, known_ip, public_key)
+            VALUES (?, ?, ?)
+            '''
+            cursor.execute(sql, (username, ip_address, public_key))
+            self.conn.commit()
+            return True
+        except dbapi2.IntegrityError:
+            print(f"Contact {username} already exists.")
+            return False
+        except Exception as e:
+            print(f"Database error while saving contact: {e}")
+            return False
